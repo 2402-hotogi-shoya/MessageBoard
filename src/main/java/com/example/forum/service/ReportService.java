@@ -1,7 +1,10 @@
 package com.example.forum.service;
 
+import com.example.forum.controller.form.CommentForm;
 import com.example.forum.controller.form.ReportForm;
+import com.example.forum.repository.CommentRepository;
 import com.example.forum.repository.ReportRepository;
+import com.example.forum.repository.entity.Comment;
 import com.example.forum.repository.entity.Report;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,7 +55,7 @@ public class ReportService {
     /*
      * レコード削除
      */
-    public void deleteReport(int  id) {
+    public void deleteReport(int id) {
         reportRepository.deleteById(id);
     }
 
@@ -87,16 +90,8 @@ public class ReportService {
      * 投稿編集処理
      */
     public void updateReportEntity(ReportForm reqReport) {
-        // 現在日時を取得
-        LocalDateTime nowDate = LocalDateTime.now();
-
-        // 表示形式を指定
-        DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss.SSS"); // ①
-        String formatNowDate = dtf1.format(nowDate); // ②
 
         Report saveReport = setReportEntity(reqReport);
-        saveReport.setUpdated_date(LocalDateTime.parse(formatNowDate, dtf1));
         reportRepository.save(saveReport);
     }
-
 }

@@ -30,11 +30,28 @@
                 <button type="submit" >投稿削除</button>
             </form>
         </div>
+        <div class="message-icon" th:each="comment : ${comments}">
+            <div th:if="${content.id == comment.message_id}">
+                <div class="text">
+                    返信 : <span th:text="${comment.text}"/>
+                </div>
+                <div class="edit-button">
+                    <a th:href="@{/comment/edit/{id}(id=${comment.id})}">
+                        <input type="button" value="編集">
+                    </a>
+                </div>
+                <div class="delete-button">
+                    <form th:method="delete" th:action="@{/comment/delete/{id}(id=${comment.id})}">
+                        <button type="submit" >コメント削除</button>
+                    </form>
+                </div>
+            </div>
+        </div>
         <div class="comment-contents">
-            <form method="post" action="/comment" th:object="${commentModel}">
+            <form method="post" th:action="@{/comment/{id}(id=${content.id})}" th:object="${commentForm}">
                 <div class="form-area">
                     <label>投稿内容</label>
-                    <textarea class="tweet-box" th:field="*{content}" size="20" maxlength="200" /></textarea><br/>
+                    <textarea class="tweet-box" size="20" th:field="*{text}" maxlength="200" /></textarea><br/>
                     <input type="submit" value="返信" />
                 </div>
             </form>
