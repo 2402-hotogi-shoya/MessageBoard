@@ -95,4 +95,9 @@ public class CommentService {
         saveReport.setMessage_id(reqReport.getMessage_id());
         commentRepository.save(saveReport);
     }
+
+    public Comment findById(int id) {
+        Comment result = commentRepository.findById(id).orElse(null);
+        return result;
+    }
 }

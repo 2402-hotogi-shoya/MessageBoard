@@ -215,6 +215,9 @@ public class ForumController {
 
         // バリデーションエラーがある場合は入力画面に戻す
         if (result.hasErrors()) {
+            Comment existing = commentService.findById(id);
+            reportForm.setMessage_id(existing.getMessage_id());
+
             ModelAndView mav = new ModelAndView();
             //編集するコメントをセット
             mav.addObject("commentForm", reportForm);

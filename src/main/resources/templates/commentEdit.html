@@ -15,6 +15,7 @@
 </div>
 <div class="main-contents">
     <form th:method="put" th:action="@{/comment/update/{id}(id=${commentForm.id})}" th:object="${commentForm}">
+        <input type="hidden" th:field="*{message_id}" />
         <div class="form-area">
             <label>投稿内容 </label>
             <div th:if="${#fields.hasErrors('text')}" th:errors="*{text}" style="color:red"></div>
