@@ -56,8 +56,6 @@ public class CommentService {
         String formatNowDate = dtf1.format(nowDate); // ②
 
         Comment comment = new Comment();
-        comment.setId(comment.getId());
-        comment.setMessage_id(comment.getMessage_id());
         comment.setText(reqReport.getText());
         comment.setUpdated_date(LocalDateTime.parse(formatNowDate, dtf1));
         comment.setCreated_date(LocalDateTime.parse(formatNowDate, dtf1));
@@ -93,6 +91,8 @@ public class CommentService {
      */
     public void updateReportEntity(CommentForm reqReport) {
         Comment saveReport = setCommentEntity(reqReport);
+        saveReport.setId(reqReport.getId());
+        saveReport.setMessage_id(reqReport.getMessage_id());
         commentRepository.save(saveReport);
     }
 }
