@@ -1,10 +1,7 @@
 package com.example.forum.service;
 
-import com.example.forum.controller.form.CommentForm;
 import com.example.forum.controller.form.ReportForm;
-import com.example.forum.repository.CommentRepository;
 import com.example.forum.repository.ReportRepository;
-import com.example.forum.repository.entity.Comment;
 import com.example.forum.repository.entity.Report;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,8 +20,12 @@ public class ReportService {
     /*
      * レコード全件取得処理
      */
-    public List<ReportForm> findAllReport() {
-        List<Report> results = reportRepository.findAll();
+    public List<ReportForm> findAllReport(LocalDate start, LocalDate end) {
+        LocalDateTime startDateTime = start.atStartOfDay();
+        LocalDateTime endDateTime = end.plusDays(1).atStartOfDay().minusNanos(1);
+
+        List<Report> results = reportRepository
+                .findByCreatedDateBetweenOrderByUpdatedDateDesc(startDateTime, endDateTime);
         List<ReportForm> reports = setReportForm(results);
         return reports;
     }
@@ -73,8 +74,8 @@ public class ReportService {
         Report report = new Report();
         report.setId(reqReport.getId());
         report.setContent(reqReport.getContent());
-        report.setUpdated_date(LocalDateTime.parse(formatNowDate, dtf1));
-        report.setCreated_date(LocalDateTime.parse(formatNowDate, dtf1));
+        report.setUpdatedDate(LocalDateTime.parse(formatNowDate, dtf1));
+        report.setCreatedDate(LocalDateTime.parse(formatNowDate, dtf1));
         return report;
     }
 

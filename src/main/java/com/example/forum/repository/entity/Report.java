@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -20,29 +21,31 @@ public class Report {
     private int id;
 
     @Column
+    @NotBlank(message = "投稿内容を入力してください")
     private String content;
 
+    @Column(name = "updated_date")
     @LastModifiedDate
-    private LocalDateTime updated_date;
+    private LocalDateTime updatedDate;
 
     @CreatedDate
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime created_date;
+    @Column(name = "created_date", nullable = false, updatable = false)
+    private LocalDateTime createdDate;
 
-    public LocalDateTime getUpdated_date() {
-        return updated_date;
+    public LocalDateTime getUpdateDate() {
+        return updatedDate;
     }
 
-    public void setUpdated_date(LocalDateTime updated_date) {
-        this.updated_date = updated_date;
+    public void setUpdatedDate(LocalDateTime updatedDate) {
+        this.updatedDate = updatedDate;
     }
 
-    public LocalDateTime getCreated_date() {
-        return created_date;
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
     }
 
-    public void setCreated_date(LocalDateTime created_date) {
-        this.created_date = created_date;
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
     }
 
 
