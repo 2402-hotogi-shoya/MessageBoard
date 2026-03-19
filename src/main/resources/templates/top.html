@@ -18,6 +18,11 @@
 
     <button type="submit">検索</button>
 </form>
+<div th:object="${commentForm}">
+    <div th:if="${#fields.hasErrors('text')}" style="color:red">
+        <p th:errors="*{text}"></p>
+    </div>
+</div>
 <div class="main-contents">
     <a href="/new">
         <button class="new-button" type="button">新規投稿</button>
@@ -58,7 +63,6 @@
             <form method="post" th:action="@{/comment/{id}(id=${content.id})}" th:object="${commentForm}">
                 <div class="form-area">
                     <label>投稿内容</label>
-                    <div th:if="${#fields.hasErrors('text')}" th:errors="*{text}" style="color:red"></div>
                     <textarea class="tweet-box" size="20" th:field="*{text}" maxlength="200" /></textarea><br/>
                     <input type="submit" value="返信" />
                 </div>

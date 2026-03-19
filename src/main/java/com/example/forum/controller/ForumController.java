@@ -9,9 +9,11 @@ import com.example.forum.service.ReportService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -29,9 +31,11 @@ public class ForumController {
      */
     @GetMapping
     public ModelAndView top(@RequestParam(required = false) String startDate,
-                            @RequestParam(required = false) String endDate) {
+                            @RequestParam(required = false) String endDate,
+                            Model model) {
+        
         ModelAndView mav = new ModelAndView();
-        CommentForm commentForm = new CommentForm();
+//        CommentForm commentForm = new CommentForm();
 
         // 今日
         LocalDate today = LocalDate.now();
@@ -51,18 +55,22 @@ public class ForumController {
             end = LocalDate.parse(endDate);
         }
 
+
         // 投稿を全件取得
         List<ReportForm> contentData = reportService.findAllReport(start, end);
         List<CommentForm> commentData = commentService.findAllReport();
+
         // 画面遷移先を指定
         mav.setViewName("/top");
 
+        if (!model.containsAttribute("commentForm")) {
+            mav.addObject("commentForm", new CommentForm());
+        }
         // 投稿データオブジェクトを保管
         mav.addObject("startDate", start.toString());
         mav.addObject("endDate", end.toString());
 
         mav.addObject("contents", contentData);
-        mav.addObject("commentForm", commentForm);
         mav.addObject("comments", commentData);
         return mav;
     }
@@ -107,16 +115,15 @@ public class ForumController {
     @PostMapping("/comment/{id}")
     public ModelAndView addCommentContent(@PathVariable int id,
                                           @Valid @ModelAttribute("commentForm") CommentForm commentForm,
-                                          BindingResult result){
+                                          BindingResult result,
+                                          RedirectAttributes redirectAttributes){
 
         // バリデーションエラーがある場合は入力画面に戻す
         if (result.hasErrors()) {
-            ModelAndView mav = new ModelAndView();
-            //編集するコメントをセット
-            mav.addObject("commentForm", commentForm);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.commentForm", result);
+            redirectAttributes.addFlashAttribute("commentForm", commentForm);
             //画面遷移先を指定
-            mav.setViewName("/top");
-            return mav;
+            return new ModelAndView("redirect:/");
         }
 
         // 投稿をテーブルに格納
