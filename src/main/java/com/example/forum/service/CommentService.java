@@ -1,13 +1,10 @@
 package com.example.forum.service;
 
 import com.example.forum.controller.form.CommentForm;
-import com.example.forum.controller.form.ReportForm;
 import com.example.forum.repository.CommentRepository;
 import com.example.forum.repository.entity.Comment;
-import com.example.forum.repository.entity.Report;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -23,7 +20,7 @@ public class CommentService {
      * レコード全件取得処理
      */
     public List<CommentForm> findAllReport() {
-        List<Comment> results = commentRepository.findAll();
+        List<Comment> results = commentRepository.findAllByOrderByUpdatedDateDesc();
         List<CommentForm> reports = setCommentForm(results);
         return reports;
     }
@@ -57,8 +54,8 @@ public class CommentService {
 
         Comment comment = new Comment();
         comment.setText(reqReport.getText());
-        comment.setUpdated_date(LocalDateTime.parse(formatNowDate, dtf1));
-        comment.setCreated_date(LocalDateTime.parse(formatNowDate, dtf1));
+        comment.setUpdatedDate(LocalDateTime.parse(formatNowDate, dtf1));
+        comment.setCreatedDate(LocalDateTime.parse(formatNowDate, dtf1));
         return comment;
     }
 

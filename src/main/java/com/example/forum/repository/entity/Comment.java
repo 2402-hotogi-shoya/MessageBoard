@@ -26,26 +26,27 @@ public class Comment {
     private String text;
 
     @LastModifiedDate
-    private LocalDateTime updated_date;
+    @Column(name = "updated_date")
+    private LocalDateTime updatedDate;
 
     @CreatedDate
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime created_date;
+    @Column(name = "created_date", nullable = false, updatable = false)
+    private LocalDateTime createdDate;
 
-    public LocalDateTime getUpdated_date() {
-        return updated_date;
+    public LocalDateTime getUpdatedDate() {
+        return updatedDate;
     }
 
-    public void setUpdated_date(LocalDateTime updated_date) {
-        this.updated_date = updated_date;
+    public void setUpdatedDate(LocalDateTime updatedDate) {
+        this.updatedDate = updatedDate;
     }
 
-    public LocalDateTime getCreated_date() {
-        return created_date;
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
     }
 
-    public void setCreated_date(LocalDateTime created_date) {
-        this.created_date = created_date;
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
     }
 
     public int getMessage_id() {
